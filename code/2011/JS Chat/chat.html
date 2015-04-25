@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="gbk">
-<title>¡°ÔÚÏß¡±ÁÄÌì 0.5</title>
+<meta charset="UTF-8">
+<title>â€œåœ¨çº¿â€èŠå¤© 0.5</title>
 <style type="text/css">
 #out{
 	height:100%;
@@ -33,7 +33,7 @@ div#rightChatDiv{
 	height:280px;
 	overflow:auto;
 	word-wrap:break-word;
-	word-break:break-all;/*Á½ÕßÈ¡ÆäÒ»±ã¿É*/
+	word-break:break-all;/*ä¸¤è€…å–å…¶ä¸€ä¾¿å¯*/
 }
 ul{ padding:0px; margin:0px; list-style-type:none; }
 .userLi{
@@ -100,12 +100,12 @@ textarea{
 			<div class="chatContent divBorder" id="leftchatContent">
 			</div>
 			<div class="toolBar divBorder">
-				<span class="usercolor" id="leftusername" onmouseover="alterText(this)">ÓÃ»§ 1</span>
+				<span class="usercolor" id="leftusername" onmouseover="alterText(this)">ç”¨æˆ· 1</span>
 				<div id="leftDivSelect" class="divSelect divBorder" onmouseover="showOption('left')" onmouseout="hideOption('left')" style="color:magenta">
-					<div>×ÖÌåÑÕÉ«</div>
+					<div>å­—ä½“é¢œè‰²</div>
 					<div class="divOption divBorder" style="display:none" id="leftdivOption">
 						<script type="text/javascript">
-							for(var i=1; i<8; i++){		//	Èôi´Ó0¿ªÊ¼£¬ÔòÓĞ°×É«£¬ÇÒÏÂÃæµÄtopÓ¦¸ÄÎªÏàÓ¦µÄ(20*i)
+							for(var i=1; i<8; i++){		//	è‹¥iä»0å¼€å§‹ï¼Œåˆ™æœ‰ç™½è‰²ï¼Œä¸”ä¸‹é¢çš„topåº”æ”¹ä¸ºç›¸åº”çš„(20*i)
 								document.write("<" + "div style='top:" + (20*(i-1)) + "px;left:0px;"
 								+ "background:rgb(" + (255*(4-i)) + "," + ((i%4<2)?255:0) + "," + ((i%2==0)?255:0) + ")'"
 								+ "onmouseover='optionColor(this)' onclick='hideOption(\"left\")'></div" + ">");
@@ -128,12 +128,12 @@ textarea{
 			<div class="chatContent divBorder" id="rightchatContent">
 			</div>
 			<div class="toolBar divBorder">
-				<span class="usercolor" id="rightusername" onmouseover="alterText(this)">ÓÃ»§ 2</span>
+				<span class="usercolor" id="rightusername" onmouseover="alterText(this)">ç”¨æˆ· 2</span>
 				<div id="rightDivSelect" class="divSelect divBorder" onmouseover="showOption('right')" onmouseout="hideOption('right')" style="color:red">
-					<div>×ÖÌåÑÕÉ«</div>
+					<div>å­—ä½“é¢œè‰²</div>
 					<div class="divOption divBorder" style="display:none" id="rightdivOption">
 						<script type="text/javascript">
-							for(var i=1; i<8; i++){		//	Èôi´Ó0¿ªÊ¼£¬ÔòÓĞ°×É«£¬ÇÒÏÂÃæµÄtopÓ¦¸ÄÎªÏàÓ¦µÄ(20*i)
+							for(var i=1; i<8; i++){		//	è‹¥iä»0å¼€å§‹ï¼Œåˆ™æœ‰ç™½è‰²ï¼Œä¸”ä¸‹é¢çš„topåº”æ”¹ä¸ºç›¸åº”çš„(20*i)
 								document.write("<" + "div style='top:" + (20*(i-1)) + "px;left:0px;"
 								+ "background:rgb(" + (255*(4-i)) + "," + ((i%4<2)?255:0) + "," + ((i%2==0)?255:0) + ")'"
 								+ "onmouseover='optionColor(this)' onclick='hideOption(\"right\")'></div" + ">");
