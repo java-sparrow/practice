@@ -1,0 +1,354 @@
+<html>
+<head><title>Javascript扫雷</title>
+<style type="text/css" rel="stylesheet">
+/* 鼠标移出时的背景 */
+td.out{
+	background:#8ABDEF;
+}
+/* 鼠标停留时的背景 */
+td.over{
+	background:#8EDDFF;
+}
+/* 鼠标点击时（后）的背景 */
+td.clicked{
+	background:#D1DEEE;
+}
+td.mine{
+	background:#FBC8FF;
+}
+td.hit{
+	background:#FF8844;
+}
+/* 清除td的padding，使单元格长宽一致 */
+tr, td{
+	padding:0px;
+	margin:0px;
+}
+/* 设置单元格内文字等属性 */
+td{
+/*	font-size:12px;	*/
+	width:35px;
+	height:35px;
+	text-align:center;
+}
+</style>
+</head>
+<script type="text/javascript">
+function setBgcolor(td){		//	设置单元格背景颜色（把out改为over，把over给为out。如果都不是，则说明已被点击过，将不再改变背景颜色）
+	if(td.className == "out"){
+		td.className = "over";
+	}else if(td.className == "over"){
+		td.className = "out";
+	}
+}
+
+function showNumber(td){
+//	td.innerHTML = getNodeIndex(td.parentNode) + "," + getNodeIndex(td);
+//	td.innerHTML = setMine(9,9,10);
+	td.innerHTML = exploreMine(td);
+	if(td.innerHTML == "true"){
+		gameover();
+		td.className = "hit";
+	}else{
+		td.className = "clicked";
+	}
+//	td.innerHTML = (exploreMine(td))?"":"";
+}
+
+/*function tdPosition(td){
+	var tr = td.parentNode;
+	var trIndex = 0;
+	var tdIndex = 0;
+}*/
+
+function getNodeIndex(node){	//	得到某节点 在父节点中 相对于其它同类型兄弟节点 的下标
+	if(node == null){
+		return null;
+	}
+
+	var index = 0;
+	var name = node.nodeName;	//	节点名字
+	
+	while(node.previousSibling != null){
+		if(node.previousSibling.nodeName == name){		//	当节点名字相同时，下标才被统计
+			index++;
+		}
+		node = node.previousSibling;
+	}
+	return index;
+}
+
+/*
+function setMine(width, height, number){		//	设置地雷所在的行列下标，并返回包含这个下标的数组。这个函数不方便，遂不继续完善
+	var mine_position = new Array(number);
+	var x, y;
+	for(var i=0; i<number; i++){
+		x = Math.floor(Math.random()*width);
+		y = Math.floor(Math.random()*height);
+		mine_position[i] = [x, y];
+		if(newMemberInArray(mine_position[i], mine_position)){	//	如果下标是新的，则跳过下面的数组处理
+			//alert(mine_position[i]+"\n"+mine_position);
+			continue;
+		}
+		mine_position.pop();					//	当下标已存在不止一次时，删除本次生存的下标
+		i--;
+	}
+	return mine_position;
+	
+//	var gross = width*height;
+//	var numberArray = new Array(number);
+//	for(var i=0; i<number; i++){
+//		numberArray[i] = Math.floor(Math.random()*gross);
+//	}
+//	return numberArray;
+	
+//	return width*height;
+//	return Math.floor(Math.random()*number);
+}
+
+function exploreMine(td){						//	扫雷，判断点击区域是否有雷。由于setMine函数需要改进，此函数所用的数据结构也需要相应改动
+//	getNodeIndex(td.parentNode) + "," + getNodeIndex(td);
+//	minePosition;
+	var x = getNodeIndex(td.parentNode);
+	var y = getNodeIndex(td);
+	
+	for(var i=0; i<minePosition.length; i++){
+		if((x == minePosition[i][0]) && (y == minePosition[i][1])){			//	if([x, y] == mine_position[i]){		//	wrong!
+			return true;
+		}
+	}
+	return false;
+}
+
+function newMemberInArray(value, array){		//	此方法对一维数组有效，对二维数组失效。。。解决方法：将数组转换成字符串进行比较（用字符串方法或自定义正则）
+													//	或者，将多维数组 分成多个一维数组传入，但此方法相当低效
+	var count = 0;
+	
+//	for(var i in array){
+//		if(value == array[i]){
+//			count++;
+//		}
+//	}
+
+//	alert("value: "+value+"\ncount: "+count + "\narray:   " + array + "  \narray.length     " +array.length);
+
+
+	for(var i=0; i<array.length-1; i++){
+		if(value == array[i]){
+			count++;
+		}
+	}
+	return (count==0)?true:false;
+//	return count;
+}
+*/
+
+function setMine(width, height, number){
+	var mineSubscript = [];
+	for(var i=0; i<height; i++){
+		mineSubscript[i] = [];
+		for(var j=0; j<width; j++){
+			mineSubscript[i][j] = false;
+		}
+	}
+//	for(i in mineSubscript){
+//		mineSubscript[i] = [];
+//	}
+//	alert(mineSubscript[0].length);
+	var x, y;
+	for(var k=0; k<number; k++){
+		x = Math.floor(Math.random()*width);
+		y = Math.floor(Math.random()*height);
+		if(mineSubscript[y][x] == true){	//	if(mineSubscript[y][x])
+			k--;
+			continue;
+		}
+		mineSubscript[y][x] = true;
+	}
+	return mineSubscript;
+}
+
+function exploreMine(td){
+	var x = getNodeIndex(td);
+	var y = getNodeIndex(td.parentNode);
+	
+	if(minePosition[y][x]){
+		return minePosition[y][x];
+	}else{
+		return countMine(x,y);
+	}
+}
+
+/*
+function previewMineTest(btn){
+	alert(btn.nodeName);
+	btn.click();	//	这句无法实现循环调用，下面的递归语句才能实现
+//	previewMineTest(btn);
+}
+*/
+
+function countMine(x,y){
+	var count = 0;
+	var height = minePosition.length;
+	var width = (height==0) ? 0: minePosition[0].length;
+	
+	for(var i=-1; i<=1; i++){
+		for(var j=-1; j<=1; j++){
+			if(y+i>=0 && y+i<=height-1 && x+j>=0 && x+j<=width-1){
+				if(minePosition[y+i][x+j]){
+					count++;
+				}
+			}
+			//	if(y+i>=0 && y+i<=height-1 && x+j>=0 && x+j<=width-1 && minePosition[y+i][x+j])count++:
+		}
+	}
+	return count;
+}
+
+/*
+function previousSameSibling(node){
+	if(node == null)return null;
+	
+	var name = node.nodeName;	//	节点名字
+	node = node.previousSibling;
+	
+	while(node != null){
+		if(node.nodeName == name){
+			return node;
+		}
+		node = node.previousSibling;
+	}
+	return null;
+}
+function nextSameSibling(node){
+	if(node == null)return null;
+	
+	var name = node.nodeName;	//	节点名字
+	node = node.nextSibling;
+	
+	while(node != null){
+		if(node.nodeName == name){
+			return node;
+		}
+		node = node.nextSibling;
+	}
+	return null;
+}
+*/
+
+function previewMineForIE(){		//	火狐和谷歌，由于无法实现自动点击，实验时可以将td的onclick改为onmousemove
+	var table = document.getElementsByTagName("table");
+//	alert(table[0].firstChild.firstChild.nodeName);
+	var tr = table[0].firstChild.firstChild;
+	var td;
+	while(tr != null){
+		td = tr.firstChild;
+		while(td != null){
+			td.click();				//	火狐和谷歌浏览器无法识别这里的click()方法。“a();”方法在这句之后就不执行了（在这句之前可以执行）
+			td = td.nextSibling;
+		}
+//		alert(tr.nodeName);
+		tr = tr.nextSibling;
+	}
+//	var tr = table.firstChild
+}
+
+function previewMine(){
+	var table = document.getElementsByTagName("table");
+	var tr = table[0].firstChild.firstChild;
+	var td;
+	while(tr != null){
+		td = tr.firstChild;
+		while(td != null){
+			showNumber(td);
+//			td.className = "clicked";
+			td = td.nextSibling;
+		}
+		tr = tr.nextSibling;
+	}
+}
+function previewMineMousemove(){
+	var table = document.getElementsByTagName("table");
+	var tr = table[0].firstChild.firstChild;
+	var td;
+	while(tr != null){
+		td = tr.firstChild;
+		while(td != null){
+//			alert(td.nodeName);		//	alert:81 times
+			td.onmousemove = function(){
+				showNumber(this);
+			};
+			td = td.nextSibling;
+		}
+		tr = tr.nextSibling;
+	}
+}
+
+function a(){
+	alert("test");
+}
+
+function gameover(){
+	var table = document.getElementsByTagName("table");
+	var tr = table[0].firstChild.firstChild;
+	var td;
+	while(tr != null){
+		td = tr.firstChild;
+		while(td != null){
+			if(td.className == "out"){
+				td.innerHTML = exploreMine(td);
+				td.className = (td.innerHTML=="true") ? "mine" : "clicked";
+			}
+			td = td.nextSibling;
+		}
+		tr = tr.nextSibling;
+	}
+}
+</script>
+
+<body bgcolor="#DCDCDC">
+<!-- <body bgcolor="gainsboro"> -->
+
+
+<script type="text/javascript">
+document.write("<table border=\"1\" align=\"center\" cellspacing=\"0\" bgcolor=\"white\">");
+	for(var i=0; i<9; i++){
+		document.write("<tr>");
+		for(var j=0; j<9; j++){
+			document.write("<td class=\"out\" onmouseover=\"setBgcolor(this)\" onmouseout=\"setBgcolor(this)\" onclick=\"showNumber(this)\"></td>");
+		}
+		document.write("</tr>");
+	}
+document.write("</table>");
+var minePosition = setMine(9,9,10);
+
+
+/*
+var arr = [];
+arr[0] = [2,3];
+arr[1] = [3,3];
+arr[2] = [2,4];
+arr[3] = [3,3];
+arr[4] = [3,3];
+var ss = [];
+ss[0] = [2,4];
+//alert(newMemberInArray(ss[0],arr));
+//alert(newMemberInArray(arr[2],arr));
+//alert(ss[0] + "\n" + arr[2] + "\n" + (ss[0] + "\n" + arr[2]));
+alert(arr[4] + "  " + newMemberInArray(arr[4],arr) + "in\n" + arr);
+alert(arr[1] + "  " + newMemberInArray(arr[1],arr) + "in\n" + arr);
+alert(arr[0] + "  " + newMemberInArray(arr[0],arr) + "in\n" + arr);
+*/
+//var arrs = [1,4,76,1,1,4];
+//alert(newMemberInArray(7,arrs));
+</script>
+
+
+<p><input type="button" value="预览" onclick="previewMine()" /></p>
+<p><input type="button" value="IEclick()预览" onclick="previewMineForIE()" /></p>
+<p><input type="button" value="mousemove预览" onclick="previewMineMousemove()" /></p>
+
+</body>
+</html>
+<!-- <script type="text/javascript">
+</script> -->

@@ -1,0 +1,101 @@
+<html>
+<head><title>qq_face</title>
+<style type="text/css">
+.chatDiv{
+	width:450px;
+	height:450px;
+	background:white;
+	margin:0 auto;	/*IE ”÷≤ªæ”÷–°£°£°£*/
+}
+.chatContent{
+	height:180px;
+	overflow:auto;
+	word-wrap:break-word;
+	word-break:break-all;
+}
+.toolBar{
+	height:30px;
+	position:relative;
+	background:rgb(248,235,230);
+	line-height:30px;
+}
+.toolBar img#face{
+	margin-left:10px;
+}
+#faceDiv{
+	width:420px;
+	background:white;
+	position:absolute;
+	left:0px;
+	bottom:30px;
+	border:1px solid rgb(72,121,184);
+}
+#faceDiv img{
+	background:white;
+	padding:2px;
+	margin:0px;
+	border:1px solid rgb(223,230,246);
+}
+.editContent{
+	height:200px;
+}
+#textDiv{
+	height:100%;
+	width:100%;
+	overflow:auto;
+	word-wrap:break-word;
+	word-break:break-all;
+}
+.footbutton{
+	height:30px;
+	text-align:right;
+	position:relative;
+}
+.hide{ display:none; }
+.show{ display:block; }
+.divBorder{ border: 1px solid red; }
+</style>
+</head>
+<script type="text/javascript">
+function faceState(state){
+	document.getElementById("faceDiv").className = state;
+}
+function addFace(img){
+	var textDiv = document.getElementById("textDiv");
+	var imgClone = document.createElement("img");
+	imgClone.src = img.src;
+	
+	textDiv.appendChild(imgClone);
+	faceState('hide');
+}
+function claerContent(){
+	document.getElementById("textDiv").innerHTML = "";
+}
+</script>
+<body>
+<table align="center">
+<tr><td>
+<div class="chatDiv">
+	<div class="chatContent divBorder" id="rightchatContent">
+	</div>
+	<div class="toolBar divBorder">
+		<div class="hide" id="faceDiv">
+			<script type="text/javascript">
+				for(var i=1; i<52; i++){
+					document.write("<img src='qqFace/" + i + ".gif' onclick='addFace(this)' />");
+				}
+			</script>
+		</div>
+		<img id="face" src="qqFace/face.png" onclick="faceState('show');" />
+	</div>
+	<div class="editContent divBorder">
+		<div id="textDiv" contentEditable=true></div>
+	</div>
+	<div class="footbutton divBorder">
+		<input type="button" value="clear" onclick="claerContent();" />
+		<input type="button" value="send" />
+	</div>
+</div>
+</td></tr></table>
+</body>
+</html>

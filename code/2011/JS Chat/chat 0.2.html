@@ -1,0 +1,200 @@
+<html>
+<head><title>“在线”聊天</title>
+<style type="text/css">
+#out{
+	height:100%;
+	background:rgb(188,238,254);
+}
+#main{
+	width:950px;
+	height:450px;
+	margin:0px auto;
+	/*border-top:100px solid rgb(238,238,238);*/
+	border-style:solid;
+	border-color:rgb(238,238,238);
+	border-width:20px 20px 100px 20px;
+	background:rgb(238,238,238);
+}
+.chatDiv{
+	width:450px;
+	height:450px;
+	background:white;
+}
+div#leftChatDiv{
+	float:left;
+}
+div#rightChatDiv{
+	float:right;
+}
+.chatContent{
+	height:280px;
+	overflow:auto;
+}
+.userLi{
+	margin:0px 0px 0px 7px;;
+	padding:0px;
+	list-style-type:none;
+}
+.msgDiv{
+	margin:0px 0px 10px 24px;
+}
+.toolBar{
+	height:30px;
+}
+.toolBar span{
+	color:#008040;
+	line-height:30px;
+	margin-left:10px;
+}
+.toolBar div{
+	float:right;
+	line-height:30px;
+}
+.toolBar div div{
+	width:30px;
+	height:20px;
+	margin:5px;
+}
+.divOption{
+	height:30px;
+	margin:0px;
+	padding:0px;
+}
+/*.toolBar div span{
+	line-height:30px;
+	padding-left:10px;
+}
+.toolBar div select{
+	width:50px;
+}*/
+.usercolor{ color:#008040; }
+.editContent{
+	height:100px;
+}
+textarea{
+	height:100%;
+	width:100%;
+}
+.footbutton{
+	height:30px;
+	text-align:right;
+	position:relative;
+}
+.footbutton img{
+	position:absolute;
+	top:-53px;
+	left:250px;
+}
+.hide{ display:none; }
+.show{ display:block; }
+.divBorder{ border: 1px solid red; }
+</style>
+</head>
+<script type="text/javascript">
+function sendMsg(side){
+	var chatDiv = document.getElementById(side + "chatContent");
+	var username = document.getElementById(side + "username").innerHTML;
+	var msg = document.getElementById(side + "Msg");
+
+	if(msg.value == ""){
+		warn(side);
+		return ;
+	}
+	
+	var userLi = document.createElement("li");
+	userLi.className = "userLi usercolor";
+	userLi.appendChild(document.createTextNode(username));
+	
+	var msgDiv = document.createElement("div");
+	msgDiv.className = "msgDiv";
+	msgDiv.appendChild(document.createTextNode(msg.value));
+	
+	chatDiv.appendChild(userLi);
+	chatDiv.appendChild(msgDiv);
+	msg.value = "";
+}
+
+function clearMsg(side){
+	var msg = document.getElementById(side + "Msg");
+	msg.value = "";
+}
+
+function warn(side){
+	var img = document.getElementById(side + "Warn");
+	img.className = "show";
+	//setTimeout("hideWarn(" + img + ")", 2000);
+	setTimeout(function (){
+		hideWarn(img);
+	}, 1500);
+}
+function hideWarn(img){
+	img.className = "hide";
+}
+
+function alterText(span){
+	var text = span.innerHTML;
+	var input = document.createElement("input");
+	span.parentNode.replaceChild(input, span);
+	input.type = "text";
+	input.value = text;
+	input.id = span.id;
+	input.select();
+	input.onmouseout = function(){
+		sureInput(this);
+	};
+}
+function sureInput(input){
+	var text = document.createTextNode(input.value);
+	var span = document.createElement("span");
+	input.parentNode.replaceChild(span, input);
+	span.appendChild(text);
+	span.id = input.id;
+	span.onmouseover = function(){
+		alterText(this);
+	};
+}
+
+function optionColor(option){
+	alert(option.style.background);
+	option.parentNode.style.background = option.style.background;
+	alert(option.parentNode.style.background);
+}
+</script>
+<body>
+<div id="out">
+	<div id="main">
+		<div id="leftChatDiv" class="chatDiv">
+			<div class="chatContent divBorder" id="leftchatContent">
+			</div>
+			<div class="toolBar divBorder">
+				<span class="usercolor" id="leftusername" onmouseover="alterText(this)">用户 1</span>
+				<div>
+					字体颜色<!--这中间不能有空白符，不然会将后面的div挤到下一行去（原因不明）--><div style="background:red">
+					<!--开始模拟下拉列表（因option不至此鼠标事件）-->
+					<div class="divOption" style="background:red"></div>
+					<div class="divOption" style="background:blue"></div>
+					<!----></div>
+					
+					<!--字体颜色-->
+					<!--这里可以有空白符，span并不会被挤到下一行-->
+					<!--<span style="background:red">&nbsp;</span>
+					<select style="background:white">
+						<option style="background:red" onmouseover="optionColor(this)"></option>
+						<option style="background:blue" onclick="optionColor(this)"></option>
+					</select>-->
+				</div>
+			</div>
+			<div class="editContent divBorder">
+				<textarea id="leftMsg"></textarea>
+			</div>
+			<div class="footbutton divBorder">
+				<input type="button" value="clear" onclick="clearMsg('left')" />
+				<input type="button" value="send" onclick="sendMsg('left')" />
+				<img src="warn.png" class="hide" id="leftWarn" />
+			</div>
+		</div>
+		<div id="rightChatDiv" class="chatDiv"></div>
+	</div>
+</div>
+</body>
+</html>
