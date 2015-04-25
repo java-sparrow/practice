@@ -31,9 +31,9 @@ SyntaxHighlighter 的用法（译）
 `SyntaxHighlighter` 会寻找所有带有特殊 `格式化class` 属性的 `<pre />` 标签。该属性的格式化规则等同 `CSS` 的 `style` 行内式规则。唯一需要的参数是 `brush` （详见 [配置](http://alexgorbatchev.com/SyntaxHighlighter/manual/configuration/) ），且参数值只能设置为 [这些笔刷别名](http://alexgorbatchev.com/SyntaxHighlighter/manual/brushes/) 其中之一。
 
 这里举个栗子：  
-![pre-example-before.png](http://192.168.5.121/blog/img/pre-example-before.png)  
+![pre-example-before.png](img/pre-example-before.png)  
 将被渲染为：  
-![pre-example-after.png](http://192.168.5.121/blog/img/pre-example-after.png)
+![pre-example-after.png](img/pre-example-after.png)
 
 
 
@@ -51,6 +51,6 @@ SyntaxHighlighter 的用法（译）
 **2.1版新特性** `SyntaxHighlighter` 会寻找带有特殊 `格式化class` 属性的 `<script type="syntaxhighlighter" />` 。该属性的格式化规则等同 `CSS` 的 `style` 行内式规则。唯一需要的参数是 `brush` （详见 [配置](http://alexgorbatchev.com/SyntaxHighlighter/manual/configuration/) ），且参数值只能设置为 [这些笔刷别名](http://alexgorbatchev.com/SyntaxHighlighter/manual/brushes/) 其中之一。
 
 这里举个栗子（ **请注意 需要 CDATA 标签** ）：  
-![script-example-before.png](http://192.168.5.121/blog/img/script-example-before.png)  
+![script-example-before.png](img/script-example-before.png)  
 将被渲染为：  
-![script-example-before.png](http://192.168.5.121/blog/img/script-example-after.png)  
+![script-example-before.png](img/script-example-after.png)  
