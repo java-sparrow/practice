@@ -1,0 +1,68 @@
+<html>
+<head><title>Javascript扫雷 0.5</title>
+<style type="text/css" rel="stylesheet">
+/* 鼠标移出时的背景 */
+td.out{
+	background:#8ABDEF;
+}
+/* 鼠标停留时的背景 */
+td.over{
+	background:#8EDDFF;
+}
+/* 鼠标点击时（后）的背景 */
+td.clicked{
+	background:#D1DEEE;
+}
+td.mine{
+	background:url("mine.png") #FBC8FF;
+}
+td.hit{
+	background:url("hit.png") #FF8844;
+}
+td.pre{
+	background:#FF0000;
+}
+td.flag{
+	background:url("flag.png") #FF8844;
+}
+/* 清除td的padding，使单元格长宽一致 */
+tr, td{
+	padding:0px;
+	margin:0px;
+}
+/* 设置单元格内文字等属性 */
+td{
+/*	font-size:12px;	*/
+	width:40px;
+	height:40px;
+	text-align:center;
+}
+</style>
+</head>
+
+<body bgcolor="#DCDCDC">
+<!-- <body bgcolor="gainsboro"> -->
+
+<script type="text/javascript" src="webMine.js" charset="UTF-8"></script>
+
+<script type="text/javascript">
+document.write("<table border=\"1\" align=\"center\" cellspacing=\"0\" bgcolor=\"white\">");
+	for(var i=0; i<9; i++){
+		document.write("<tr>");
+		for(var j=0; j<9; j++){
+			document.write("<td class=\"out\" onmouseover=\"setBgcolor(this)\" onmouseout=\"setBgcolor(this)\" onclick=\"time1(this);\" ondblclick=\"setFlag(this)\"></td>");
+		}
+		document.write("</tr>");
+	}
+document.write("</table>");
+var minePosition = setMine(9,9,10);
+
+</script>
+
+
+<p><input type="button" value="地雷位置预览" onclick="previewMine()" /><input type="button" value="取消预览" onclick="unpreviewMine()" /></p>
+<p><input type="button" value="重新测试" onclick="testAgain()" /></p>
+<p><input type="button" value="显示全部" onclick="gameover()" /></p>
+
+</body>
+</html>

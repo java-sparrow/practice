@@ -1,6 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
-<head><title>snake</title>
+<head><title>snake 1.6.8.2</title>
 <style type="text/css">
 div#out{
 	width:900px;
@@ -19,6 +19,7 @@ div#content{
 div.divTagOut{
 	width:400px;
 	height:500px;
+	/*height:420px;*/
 	border:1px solid red;
 	margin:10px;
 	position:relative;
@@ -40,8 +41,11 @@ div.divTagOut div.divTag div.divTagContent{
 	padding:5px;
 	display:none;
 	width:390px;
+	/*height:380px;
+	overflow:auto;*/
 }
 div.divTagOut div.defalutDivTag{ border-bottom:none; }
+/*div.divTagOut div.defalutDivTag div.divTagTitle{ color:red; }*/
 div.divTagOut div.defalutDivTag div.divTagContent{ display:block; }
 
 .clear{
@@ -83,321 +87,28 @@ div#previewFood{ background:#09f; }
 p{ text-indent:30px; }
 </style>
 </head>
-<script type="text/javascript">
-/*-------------------------------------------
-写在前面的话：
 
-为提高文字录入速度，以下将“贪食蛇”简称为“蛇”
--------------------------------------------*/
+<script type="text/javascript" src="core.js" charset="UTF-8"></script>
 
-var cell_px = 20;				//	单元格边长
-var tdCols = tdRows = 20;		//	默认列数和行数
-var tMap = null;				//	映射表格 与 “蛇”的范围信息（ tMap 是一个二维数组）
-var s;							//	Snake Object
-var sTowards = 2;				//	“蛇”的朝向：1上、2右、3下、4左（默认向右）
-var sPassSelf = "false";		//	是否允许“蛇”穿过自身（默认为否）
-var sInitLength = 3;			//	“蛇”的初始长度（含头部）
-var timeout = 300;				//	默认停顿时间 300 毫秒
-var circleID = null;
-
-//	WASD和方向键对应的键盘码
-var WASD = {
-	W : 87, A : 65, S : 83, D : 68,
-	w : 119, a : 97, s : 115, d : 100,
-	UP : 38, LEFT : 37, DOWN : 40, RIGHT : 39
-};
-//	色彩控制常量
-var SCOLOR = {
-	HEAD : "red", BODY : "yellow", FOOD : "#09f",
-	
-	//	默认颜色，供 恢复默认时使用
-	DEFAULT_HEAD : "red", DEFAULT_BODY : "yellow", DEFAULT_FOOD : "#09f"
-};
-
-//	初始化映射（使用 tableDOM 专属方法处理）
-function reflectMap(y, x){
-	var table = document.getElementById("tMap");
-
-	tMap = new Array(y);
-	for(var row=0, tr; row<y; row++){
-		tr = table.insertRow(row);
-		tMap[row] = new Array(x);
-		for(var col=0; col<x; col++){
-			tMap[row][col] = tr.insertCell(col);
-		}
-	}
-}
-
-//	游戏初始化
-function init(){
-	reflectMap(tdRows, tdCols);
-	newDefaultSnake();
-	repaint();
-}
-//	按当前配置重新初始化“蛇”
-function newDefaultSnake(){
-	s = new Snake({
-		maxCol : tdCols,
-		maxRow : tdRows,
-		towards : sTowards,
-		passSelf : sPassSelf,
-		initLength : sInitLength
-	});
-}
-
-//	循环（定时移动）
-function circle(){
-	//	以 timeout 毫秒为间隔，反复调用 snakeMove()
-	circleID = setInterval("snakeMove()", timeout);
-	document.getElementById("gameState_span").innerHTML = "游戏中";
-	document.getElementById("gameState_button").value = "暂停";
-}
-//	取消（定时移动）
-function unCircle(){
-	clearInterval(circleID);
-	circleID = null;
-	document.getElementById("gameState_span").innerHTML = "暂停中";
-	document.getElementById("gameState_button").value = "继续";
-}
-
-//	重画，即刷新视觉效果（作用：①“蛇”移动之后，重画可覆盖之前的图案；②当改变颜色配置时，利用这个可以即时看到效果）
-function repaint(){
-	for(var i=1; i<s.length(); i++){
-		tMap[s.body[i].y][s.body[i].x].style.backgroundColor = SCOLOR.BODY;
-	}
-	
-	tMap[s.head.y][s.head.x].style.backgroundColor = SCOLOR.HEAD;
-	
-	tMap[s.food.y][s.food.x].style.backgroundColor = SCOLOR.FOOD;
-}
-
-//	让“蛇”移动
-function snakeMove(){
-	if(s.move()){	//	如果能继续移动，则移动。否则出 Game over! 提示（但还是可以继续的，具体方法参考 帮助说明）
-		if(s.head.y == s.food.y && s.head.x == s.food.x){
-			s.add(s.last.y, s.last.x);
-			s.newFood();
-		}else{
-			tMap[s.last.y][s.last.x].style.backgroundColor = "";
-		}
-		
-		repaint();
-	}else{
-		unCircle();
-		alert("Game over!");
-	}
-}
-
-//	点：坐标对象模型，辅助建模
-var Point = function (y, x){
-	this.x = x;
-	this.y = y;
-}
-//	“蛇”模型，内置：增加、减少“蛇身”长度、“蛇”移动、生成“新食物”坐标等方法
-var Snake = function(snakeInitData){
-	//	“蛇”运动方向 常量
-	Snake.side = {
-		UP :	1,
-		RIGHT :	2,
-		DOWN :	3,
-		LEFT :	4
-	};
-	this.towards = (snakeInitData.towards>=1 && snakeInitData.towards<=4) ? Math.floor(snakeInitData.towards) : Snake.side.RIGHT;
-	this.back = (this.towards>2) ? this.towards-2 : this.towards+2;
-	
-	this.maxCol = (snakeInitData.maxCol>=2) ? Math.floor(snakeInitData.maxCol) : 10;
-	this.maxRow = (snakeInitData.maxRow>=2) ? Math.floor(snakeInitData.maxRow) : 10;
-	
-	this.body = new Array();
-	
-	this.add = function (y, x){
-		if(this.body.length >= this.maxLength-1){
-			return;
-		}
-		
-		this.body.push(new Point(y, x));
-	}
-	this.remove = function (){
-		if(this.body.length >= initLength){
-			this.last = this.body.pop();
-		}
-	}
-	
-	var initLength = (snakeInitData.initLength>1) ? Math.round(snakeInitData.initLength) : 1;
-
-	if(!(this.towards&1) && initLength>this.maxCol){
-		initLength = this.maxCol;
-	}else if((this.towards&1) && initLength>this.maxRow){
-		initLength = this.maxRow;
-	}
-	
-	var initBodyX, initBodyY;
-	if(this.towards == Snake.side.UP){
-		initBodyY = "this.maxRow-initLength+i";
-		initBodyX = "this.maxCol-1";
-	}else if(this.towards == Snake.side.RIGHT){
-		initBodyY = "0";
-		initBodyX = "initLength-1-i";
-	}else if(this.towards == Snake.side.DOWN){
-		initBodyY = "initLength-1-i";
-		initBodyX = "0";
-	}else if(this.towards == Snake.side.LEFT){
-		initBodyY = "this.maxRow-1";
-		initBodyX = "this.maxCol-initLength+i";
-	}
-	for(var i=0; i<initLength; i++){
-		eval("this.add(" + initBodyY + ", " + initBodyX + ");");
-	}
-	this.maxLength = (snakeInitData.maxLength>initLength && snakeInitData.maxLength<this.maxCol*this.maxRow) ? snakeInitData.maxLength : this.maxCol*this.maxRow;
-	
-	this.head = this.body[0];
-	this.tail = function (){
-		return this.body[this.body.length-1];
-	};
-	this.last = this.body[this.body.length-1];
-	
-	this.length = function (){
-		return this.body.length;
-	}
-	
-	
-	this.passSelf = snakeInitData.passSelf;
-	this.isInBody = function (y, x){
-		if(this.passSelf == "true"){
-			return false;
-		}
-	
-		for(var i=0; i<this.body.length-1; i++){
-			if(y == this.body[i].y && x == this.body[i].x){
-				return true;
-			}
-		}
-		return false;
-	}
-	
-	this.move = function (){
-		var x = this.body[0].x;
-		var y = this.body[0].y;
-		
-		if(this.towards == Snake.side.UP){
-			if(y == 0 || this.isInBody(y-1, x)){
-				return false;
-			}
-		
-			this.body.unshift(new Point(y-1, x));
-			
-		}else if(this.towards == Snake.side.RIGHT){
-			if(x == this.maxCol-1 || this.isInBody(y, x+1)){
-				return false;
-			}
-		
-			this.body.unshift(new Point(y, x+1));
-			
-		}else if(this.towards == Snake.side.DOWN){
-			if(y == this.maxRow-1 || this.isInBody(y+1, x)){
-				return false;
-			}
-		
-			this.body.unshift(new Point(y+1, x));
-			
-		}else if(this.towards == Snake.side.LEFT){
-			if(x == 0 || this.isInBody(y, x-1)){
-				return false;
-			}
-		
-			this.body.unshift(new Point(y, x-1));
-		}
-		
-		this.head = this.body[0];
-		this.last = this.body.pop();
-		this.back = (this.towards>2) ? this.towards-2 : this.towards+2;
-		return true;
-	}
-	
-	this.food = new Point(Math.floor(Math.random()*this.maxRow), Math.floor(Math.random()*this.maxCol));
-	while( this.isInBody(this.food.y, this.food.x) ){
-		this.food.x =  Math.floor(Math.random()*this.maxCol);
-		this.food.y =  Math.floor(Math.random()*this.maxRow);
-	}
-	
-	this.newFood = function (){
-		var x =  Math.floor(Math.random()*this.maxCol);
-		var y =  Math.floor(Math.random()*this.maxRow);
-		
-		while( this.isInBody(y, x) ){
-			x =  Math.floor(Math.random()*this.maxCol);
-			y =  Math.floor(Math.random()*this.maxRow);
-		}
-		
-		this.food.x = x;
-		this.food.y = y;
-	}
-}
-
-//	键盘控制，获取键盘码
-function kbControl(evt){
-	var e = window.event || evt;
-	
-	var keyNum = e.keyCode || e.which;
-
-	return control(keyNum);
-}
-//	响应键盘码操作，包括：“蛇”的移动 或 暂停、开始
-function control(keyNum){
-	
-	if(circleID == null){
-		if(keyNum == 32){
-			circle();
-		}
-		return false;
-	}
-	
-	if(keyNum == WASD.W || keyNum == WASD.UP){
-		if(s.back != Snake.side.UP){
-			s.towards = Snake.side.UP;
-		}
-		if(s.back == Snake.side.DOWN){	//	加速
-			snakeMove();
-		}
-		
-	}else if(keyNum == WASD.A || keyNum == WASD.LEFT){
-		if(s.back != Snake.side.LEFT){
-			s.towards = Snake.side.LEFT;
-		}
-		if(s.back == Snake.side.RIGHT){
-			snakeMove();
-		}
-		
-	}else if(keyNum == WASD.S || keyNum == WASD.DOWN){
-		if(s.back != Snake.side.DOWN){
-			s.towards = Snake.side.DOWN;
-		}
-		if(s.back == Snake.side.UP){
-			snakeMove();
-		}
-		
-	}else if(keyNum == WASD.D || keyNum == WASD.RIGHT){
-		if(s.back != Snake.side.RIGHT){
-			s.towards = Snake.side.RIGHT;
-		}
-		if(s.back == Snake.side.LEFT){
-			snakeMove();
-		}
-		
-	}else if(keyNum == 32){
-		unCircle();
-	}
-	
-	return false;
-}
-</script>
+<!-- onkeydown使用虚拟键盘码，不区分字母大小写（默认为大写字母键值）；而onkeypress会使用键盘生成的 Unicode 字符码，区分字母大小写 -->
+<!-- onkeydown 加入return是为了阻止 按空格键事件 起泡（当页面有滚动条时，按空格键浏览器会翻页） -->
 <body onload="init()" onkeydown="return kbControl(event)">
 <div id="out">
 	<div id="content">
 	
 <script type="text/javascript">
 //	输出表格
+//document.write("<table id='tMap' width='400' height='400' cellspacing='0' align='center' style='border:1px solid black;'>");
 document.write("<table id='tMap' width='" + tdCols*cell_px + "' height='" + tdRows*cell_px + "' cellspacing='0' align='center' style='border:1px solid black;'>");
+/*
+for(var i=0; i<tdRows; i++){
+	document.write("<tr>");
+	for(var j=0; j<tdCols; j++){
+		document.write("<td></td>");
+	}
+	document.write("</tr>");
+}
+*/
 document.write("</table>");
 </script>
 
@@ -570,6 +281,8 @@ document.write("</table>");
 						</select>
 					</div>
 				</fieldset>
+				<!-- <a href="xxx.html?tdCols=xx.." target="_self" onclick="reset()">设置</a> -->
+				<!-- 分数 -->
 				<div>
 					<input type="button" value="确定并重新开始" onclick="setData()" title="部分设置需重新开始才生效" />
 					<input type="button" value="应用" onclick="apply()" title="速度、外观控制即时生效" />
@@ -600,6 +313,20 @@ document.write("</table>");
 			</div>
 		</div>
 		<div class="divTag">
+			<div class="divTagTitle" onmouseover="showDivTagContent(this)">测试</div>
+			<div class="divTagContent">
+				<fieldset>
+					<legend>模型控制</legend>
+					<div class="setItemDiv">
+						蛇身长度
+						<input type="button" value="+" onclick="addSnakeLength(1)" />
+						<input type="button" value="-" onclick="minusSnakeLength(1)" />
+						<input type="button" value="自定义" title="自定义功能暂未上线，敬请期待" />
+					</div>
+				</fieldset>
+			</div>
+		</div>
+		<div class="divTag">
 			<div class="divTagTitle" onmouseover="showDivTagContent(this)">关于</div>
 			<div class="divTagContent">
 				<p>本游戏（version 6.8）由 <a href="mailto:x.l.st@qq.com">xlst</a>
@@ -620,127 +347,10 @@ document.write("</table>");
 	<div>
 		<input type="button" value="重玩" onclick="reBegin()" title="保持当前的游戏设定，本局重新开始" />
 		<input type="button" value="全部恢复默认" onclick="document.location.reload()" />
+		<!-- <input type="button" value="开始" onclick="" /> -->
 	</div>
 </div>
-<script type="text/javascript">
-/*-------------------------------------------
-下面的 javascript 代码不属于游戏的核心代码。
-因此，在设计、健壮性等方面没有进行优化，仅保证功能的实现
--------------------------------------------*/
 
-//	显示某 Tag 标签里的内容（为了简便，这两个方法没有加强容错性）
-function showDivTagContent(divTagTitle){
-	var divTagContent = divTagTitle.nextSibling;
-	
-	while(divTagContent.nodeType != 1){
-		divTagContent = divTagContent.nextSibling;
-	}
-	
-	hideDivTagExcept(divTagTitle.parentNode);
-	
-	divTagContent.style.display = "block";
-}
-
-//	隐藏所有 Tag 标签里的内容除了 参数Tag
-function hideDivTagExcept(divTag){
-	var divTags = divTag.parentNode.childNodes;
-	
-	for(i in divTags){
-		if(divTags[i].nodeType == 1 && divTags[i].nodeName == "DIV"){
-			divTags[i].style.cssText = "border-bottom:1px solid red;";
-		
-			divTags[i].getElementsByTagName("div")[1].style.display = "none";
-
-			if(divTags[i] == divTag){
-				divTags[i].style.cssText = "border-bottom:0px solid red;";
-			}
-		}
-	}
-}
-
-//	重玩（本局重新开始，并保持当前设置）
-function reBegin(){
-	unCircle();
-	newDefaultSnake();
-	resetView();
-	repaint();
-}
-//	清除上局游戏画面
-function resetView(){
-	for(var i=0; i<tdRows; i++){
-		for(var j=0; j<tdCols; j++){
-			tMap[i][j].style.backgroundColor = "";
-		}
-	}
-	
-	document.getElementById("gameState_span").innerHTML = "未开始";
-	document.getElementById("gameState_button").value = "开始";
-}
-
-//	切换游戏状态（继续/暂停）
-function changeState(){
-	if(circleID == null){
-		circle();
-	}else{
-		unCircle();
-	}
-}
-
-//	设置。会使游戏重新开始（因为有的设置需重新开始才生效）
-function setData(){
-	unCircle();
-	applyInstantData();
-
-	tMap.length = 0;
-	var table = document.getElementById("tMap");
-	for(var i=0; i<tdRows; i++){
-		table.deleteRow(0);
-	}
-	
-	tdRows = document.setForm.setTdRows.value;
-	tdCols = document.setForm.setTdCols.value;
-
-	reflectMap(tdRows, tdCols);
-
-	table.style.width = tdCols*cell_px + "px";
-	table.style.height = tdRows*cell_px + "px";
-	
-	sTowards = document.setForm.setTowards.value;
-	sPassSelf = document.setForm.setPassSelf.value;
-	sInitLength = document.setForm.setInitLength.value;
-	s = new Snake({
-		maxCol : tdCols,
-		maxRow : tdRows,
-		towards : sTowards,
-		passSelf : sPassSelf,
-		initLength : sInitLength
-	});
-	
-	resetView();
-	repaint();
-}
-//	应用。在当前游戏下，使部分设置即时生效
-function apply(){
-	applyInstantData();
-	repaint();
-}
-//	应用即时生效的数据
-function applyInstantData(){
-	timeout = document.setForm.setTime.value;
-	
-	SCOLOR.HEAD = document.setForm.setHeadColor.value;
-	SCOLOR.BODY = document.setForm.setBodyColor.value;
-	SCOLOR.FOOD = document.setForm.setFoodColor.value;
-
-	s.passSelf = document.setForm.setPassSelf.value;
-}
-
-//	重置预览视觉效果
-function resetPreviewColor(){
-	document.getElementById('previewHead').style.cssText = "";
-	document.getElementById('previewBody').style.cssText = "";
-	document.getElementById('previewFood').style.cssText = "";
-}
-</script>
+<script type="text/javascript" src="snake.js" charset="UTF-8"></script>
 </body>
 </html>

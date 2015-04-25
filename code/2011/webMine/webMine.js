@@ -1,49 +1,7 @@
-<html>
-<head><title>JavascriptÉ¨À×</title>
-<style type="text/css" rel="stylesheet">
-/* Êó±êÒÆ³öÊ±µÄ±³¾° */
-td.out{
-	background:#8ABDEF;
-}
-/* Êó±êÍ£ÁôÊ±µÄ±³¾° */
-td.over{
-	background:#8EDDFF;
-}
-/* Êó±êµã»÷Ê±£¨ºó£©µÄ±³¾° */
-td.clicked{
-	background:#D1DEEE;
-}
-td.mine{
-	background:url("mine.png") #FBC8FF;
-}
-td.hit{
-	background:url("hit.png") #FF8844;
-}
-td.pre{
-	background:#FF0000;
-}
-td.flag{
-	background:url("flag.png") #FF8844;
-}
-/* Çå³ıtdµÄpadding£¬Ê¹µ¥Ôª¸ñ³¤¿íÒ»ÖÂ */
-tr, td{
-	padding:0px;
-	margin:0px;
-}
-/* ÉèÖÃµ¥Ôª¸ñÄÚÎÄ×ÖµÈÊôĞÔ */
-td{
-/*	font-size:12px;	*/
-	width:40px;
-	height:40px;
-	text-align:center;
-}
-</style>
-</head>
-<script type="text/javascript">
-var clickTime = true;			//	ÅĞ¶ÏÊÇ·ñÖ´ĞĞµ¥»÷ÊÂ¼ş
-var count1 =0;					//	µ¥Ë«»÷´ÎÊı
+var clickTime = true;			//	åˆ¤æ–­æ˜¯å¦æ‰§è¡Œå•å‡»äº‹ä»¶
+var count1 =0;					//	å•åŒå‡»æ¬¡æ•°
 
-function setBgcolor(td){		//	ÉèÖÃµ¥Ôª¸ñ±³¾°ÑÕÉ«£¨°Ñout¸ÄÎªover£¬°Ñover¸øÎªout¡£Èç¹û¶¼²»ÊÇ£¬ÔòËµÃ÷ÒÑ±»µã»÷¹ı£¬½«²»ÔÙ¸Ä±ä±³¾°ÑÕÉ«£©
+function setBgcolor(td){		//	è®¾ç½®å•å…ƒæ ¼èƒŒæ™¯é¢œè‰²ï¼ˆæŠŠoutæ”¹ä¸ºoverï¼ŒæŠŠoverç»™ä¸ºoutã€‚å¦‚æœéƒ½ä¸æ˜¯ï¼Œåˆ™è¯´æ˜å·²è¢«ç‚¹å‡»è¿‡ï¼Œå°†ä¸å†æ”¹å˜èƒŒæ™¯é¢œè‰²ï¼‰
 	if(td.className == "out"){
 		td.className = "over";
 	}else if(td.className == "over"){
@@ -51,7 +9,7 @@ function setBgcolor(td){		//	ÉèÖÃµ¥Ôª¸ñ±³¾°ÑÕÉ«£¨°Ñout¸ÄÎªover£¬°Ñover¸øÎªout¡£È
 	}
 }
 
-function setFlag(td){			//	Ë«»÷Ê±´¥·¢´Ëº¯Êı£¬Ê¹µ¥Ôª¸ñ±³¾°±äÎªÆìÖÄ
+function setFlag(td){			//	åŒå‡»æ—¶è§¦å‘æ­¤å‡½æ•°ï¼Œä½¿å•å…ƒæ ¼èƒŒæ™¯å˜ä¸ºæ——å¸œ
 	if(td.className == "flag"){
 		td.className = "over";
 	}else if(td.className == "over"){
@@ -60,7 +18,7 @@ function setFlag(td){			//	Ë«»÷Ê±´¥·¢´Ëº¯Êı£¬Ê¹µ¥Ôª¸ñ±³¾°±äÎªÆìÖÄ
 	clickTime = false;
 }
 
-function time1(td){				//	ÑÓ³Ùº¯Êı£¬Ë«»÷Ê±ÀûÓÃ´Ë¼ä¸ô ÆÁ±Îµ¥»÷ÊÂ¼ş
+function time1(td){				//	å»¶è¿Ÿå‡½æ•°ï¼ŒåŒå‡»æ—¶åˆ©ç”¨æ­¤é—´éš” å±è”½å•å‡»äº‹ä»¶
 	setTimeout(function (){
 		showNumber(td);
 	}, 300);
@@ -85,7 +43,7 @@ function showNumber(td){
 		}
 		td.innerHTML = ifMine;
 		clickTime = true;
-	}else{		//	µ±µ¥»÷ÊÂ¼ş±»Ë«»÷ÊÂ¼şËùÆÁ±ÎÊ±£¬Ë«»÷ÊÂ¼şºóÖØÖÃclickTime
+	}else{		//	å½“å•å‡»äº‹ä»¶è¢«åŒå‡»äº‹ä»¶æ‰€å±è”½æ—¶ï¼ŒåŒå‡»äº‹ä»¶åé‡ç½®clickTime
 		count1++;
 		if(count1==2){
 			clickTime=true;
@@ -96,16 +54,16 @@ function showNumber(td){
 //	alert(ifMine);
 }
 
-function getNodeIndex(node){	//	µÃµ½Ä³½Úµã ÔÚ¸¸½ÚµãÖĞ Ïà¶ÔÓÚÆäËüÍ¬ÀàĞÍĞÖµÜ½Úµã µÄÏÂ±ê
+function getNodeIndex(node){	//	å¾—åˆ°æŸèŠ‚ç‚¹ åœ¨çˆ¶èŠ‚ç‚¹ä¸­ ç›¸å¯¹äºå…¶å®ƒåŒç±»å‹å…„å¼ŸèŠ‚ç‚¹ çš„ä¸‹æ ‡
 	if(node == null){
 		return null;
 	}
 
 	var index = 0;
-	var name = node.nodeName;	//	½ÚµãÃû×Ö
+	var name = node.nodeName;	//	èŠ‚ç‚¹åå­—
 	
 	while(node.previousSibling != null){
-		if(node.previousSibling.nodeName == name){		//	µ±½ÚµãÃû×ÖÏàÍ¬Ê±£¬ÏÂ±ê²Å±»Í³¼Æ
+		if(node.previousSibling.nodeName == name){		//	å½“èŠ‚ç‚¹åå­—ç›¸åŒæ—¶ï¼Œä¸‹æ ‡æ‰è¢«ç»Ÿè®¡
 			index++;
 		}
 		node = node.previousSibling;
@@ -113,12 +71,12 @@ function getNodeIndex(node){	//	µÃµ½Ä³½Úµã ÔÚ¸¸½ÚµãÖĞ Ïà¶ÔÓÚÆäËüÍ¬ÀàĞÍĞÖµÜ½Úµã µ
 	return index;
 }
 
-function setMine(width, height, number){	//	ÉèÖÃµØÀ×Î»ÖÃ£¬²ÎÊıÎª£º¿í¡¢³¤¡¢µØÀ×ÊıÁ¿
+function setMine(width, height, number){	//	è®¾ç½®åœ°é›·ä½ç½®ï¼Œå‚æ•°ä¸ºï¼šå®½ã€é•¿ã€åœ°é›·æ•°é‡
 	var mineSubscript = [];
 	for(var i=0; i<height; i++){
 		mineSubscript[i] = [];
 		for(var j=0; j<width; j++){
-			mineSubscript[i][j] = false;	//	¸ù¾İ²ÎÊıµÄ¿í¡¢³¤ ´´½¨Ò»¸ö¶şÎ¬Êı×é´æ·ÅµØÀ×ĞÅÏ¢£¬Ä¬ÈÏÎªÃ»ÓĞµØÀ×
+			mineSubscript[i][j] = false;	//	æ ¹æ®å‚æ•°çš„å®½ã€é•¿ åˆ›å»ºä¸€ä¸ªäºŒç»´æ•°ç»„å­˜æ”¾åœ°é›·ä¿¡æ¯ï¼Œé»˜è®¤ä¸ºæ²¡æœ‰åœ°é›·
 		}
 	}
 	
@@ -127,31 +85,31 @@ function setMine(width, height, number){	//	ÉèÖÃµØÀ×Î»ÖÃ£¬²ÎÊıÎª£º¿í¡¢³¤¡¢µØÀ×Êı
 		x = Math.floor(Math.random()*width);
 		y = Math.floor(Math.random()*height);
 		if(mineSubscript[y][x] == true){	//	if(mineSubscript[y][x])
-			k--;							//	µ±µØÀ×´æÔÚÊ±£¬ÌáÇ°½áÊø±¾´ÎÑ­»·£¬ÖØĞÂÔÙÀ´
+			k--;							//	å½“åœ°é›·å­˜åœ¨æ—¶ï¼Œæå‰ç»“æŸæœ¬æ¬¡å¾ªç¯ï¼Œé‡æ–°å†æ¥
 			continue;
 		}
 		mineSubscript[y][x] = true;			//	if(mineSubscript[y][x]){k--;}else{mineSubscript[y][x] = true;}
 	}
-	return mineSubscript;					//	·µ»ØÒ»¸ö°üº¬µØÀ×Î»ÖÃĞÅÏ¢µÄ¶şÎ¬Êı×é
+	return mineSubscript;					//	è¿”å›ä¸€ä¸ªåŒ…å«åœ°é›·ä½ç½®ä¿¡æ¯çš„äºŒç»´æ•°ç»„
 }
 
-function exploreMine(td){					//	Ì½À×
+function exploreMine(td){					//	æ¢é›·
 	var x = getNodeIndex(td);
 	var y = getNodeIndex(td.parentNode);
 	
 	if(minePosition[y][x]){
-		return minePosition[y][x];			//	¸ù¾İtdµÄĞĞ×ø±êÓëÁĞ×ø±ê£¬ÅĞ¶Ï¶şÎ¬Êı×éµÄ¸ÃÎ»ÖÃÊÇ·ñÓĞÀ×
+		return minePosition[y][x];			//	æ ¹æ®tdçš„è¡Œåæ ‡ä¸åˆ—åæ ‡ï¼Œåˆ¤æ–­äºŒç»´æ•°ç»„çš„è¯¥ä½ç½®æ˜¯å¦æœ‰é›·
 	}else{
 		return countMine(x,y);
 	}
 }
 
-function countMine(x,y){					//	¼ÆÀ×Êı
+function countMine(x,y){					//	è®¡é›·æ•°
 	var count = 0;
 	var height = minePosition.length;
 	var width = (height==0) ? 0: minePosition[0].length;
 	
-	for(var i=-1; i<=1; i++){				//	Ñ­»·´Ó×øÉÏ½Ç¿ªÊ¼£¬µ½ÓÒÏÂ½Ç½áÊø
+	for(var i=-1; i<=1; i++){				//	å¾ªç¯ä»åä¸Šè§’å¼€å§‹ï¼Œåˆ°å³ä¸‹è§’ç»“æŸ
 		for(var j=-1; j<=1; j++){
 			if(y+i>=0 && y+i<=height-1 && x+j>=0 && x+j<=width-1){
 				if(minePosition[y+i][x+j]){
@@ -164,10 +122,10 @@ function countMine(x,y){					//	¼ÆÀ×Êı
 	return count;
 }
 
-function previousSameSibling(node){			//	°²È«º¯Êı£¬ÓÃÓÚ»ñµÃÍ¬ÃûµÄÇ°Ò»¸öĞÖµÜ½Úµã
+function previousSameSibling(node){			//	å®‰å…¨å‡½æ•°ï¼Œç”¨äºè·å¾—åŒåçš„å‰ä¸€ä¸ªå…„å¼ŸèŠ‚ç‚¹
 	if(node == null)return null;
 	
-	var name = node.nodeName;	//	½ÚµãÃû×Ö
+	var name = node.nodeName;	//	èŠ‚ç‚¹åå­—
 	node = node.previousSibling;
 	
 	while(node != null){
@@ -179,10 +137,10 @@ function previousSameSibling(node){			//	°²È«º¯Êı£¬ÓÃÓÚ»ñµÃÍ¬ÃûµÄÇ°Ò»¸öĞÖµÜ½Úµã
 	return null;
 }
 
-function nextSameSibling(node){				//	°²È«º¯Êı£¬ÓÃÓÚ»ñµÃÍ¬ÃûµÄÏÂÒ»¸öĞÖµÜ½Úµã
+function nextSameSibling(node){				//	å®‰å…¨å‡½æ•°ï¼Œç”¨äºè·å¾—åŒåçš„ä¸‹ä¸€ä¸ªå…„å¼ŸèŠ‚ç‚¹
 	if(node == null)return null;
 	
-	var name = node.nodeName;	//	½ÚµãÃû×Ö
+	var name = node.nodeName;	//	èŠ‚ç‚¹åå­—
 	node = node.nextSibling;
 	
 	while(node != null){
@@ -194,7 +152,7 @@ function nextSameSibling(node){				//	°²È«º¯Êı£¬ÓÃÓÚ»ñµÃÍ¬ÃûµÄÏÂÒ»¸öĞÖµÜ½Úµã
 	return null;
 }
 
-function mineSurround(td){	//	ÁíÒ»ÖÖÊı¾İ½á¹¹£º»ñÈ¡Ã¿Ò»¸ötd¶ÔÏó£¬²¢´æ´¢ÔÚÒ»¸ö¶şÎ¬Êı×éÖĞ£¬ÕâÑù¾Í¿ÉÒÔÖ±½ÓÀûÓÃÊı×éÏÂ±ê¶ÔÌØ¶¨td½øĞĞ²Ù×÷ ¶ø²»ÓÃÍ¨¹ı·±ÔÓµÄ¼ä½ÓÒıÓÃ
+function mineSurround(td){	//	å¦ä¸€ç§æ•°æ®ç»“æ„ï¼šè·å–æ¯ä¸€ä¸ªtdå¯¹è±¡ï¼Œå¹¶å­˜å‚¨åœ¨ä¸€ä¸ªäºŒç»´æ•°ç»„ä¸­ï¼Œè¿™æ ·å°±å¯ä»¥ç›´æ¥åˆ©ç”¨æ•°ç»„ä¸‹æ ‡å¯¹ç‰¹å®štdè¿›è¡Œæ“ä½œ è€Œä¸ç”¨é€šè¿‡ç¹æ‚çš„é—´æ¥å¼•ç”¨
 //	if(td.className == "clicked"){
 //		return null;
 //	}
@@ -203,8 +161,8 @@ function mineSurround(td){	//	ÁíÒ»ÖÖÊı¾İ½á¹¹£º»ñÈ¡Ã¿Ò»¸ötd¶ÔÏó£¬²¢´æ´¢ÔÚÒ»¸ö¶şÎ¬
 	mineDown(td);
 }
 
-function mineSide(td){		//	ÅĞ¶Ï×óÓÒÁ½±ßÊÇ·ñÓĞµØÀ×¡£´Ë·½·¨Ó¦¸Ã²ğÎª¡°Ïò×ó¡±ºÍ¡°ÏòÓÒ¡±£¬ÕâÑù¿ÉÒÔ¼õÉÙµİ¹é´ÎÊı£¬±ÜÃâÖØ¸´µİ¹é
-	//	ÏÂÃæÊÇ·±ÔÓµÄ¼ä½ÓÒıÓÃ
+function mineSide(td){		//	åˆ¤æ–­å·¦å³ä¸¤è¾¹æ˜¯å¦æœ‰åœ°é›·ã€‚æ­¤æ–¹æ³•åº”è¯¥æ‹†ä¸ºâ€œå‘å·¦â€å’Œâ€œå‘å³â€ï¼Œè¿™æ ·å¯ä»¥å‡å°‘é€’å½’æ¬¡æ•°ï¼Œé¿å…é‡å¤é€’å½’
+	//	ä¸‹é¢æ˜¯ç¹æ‚çš„é—´æ¥å¼•ç”¨
 	var preTd = previousSameSibling(td);
 	var nextTd = nextSameSibling(td);
 	var flag = false;
@@ -217,13 +175,13 @@ function mineSide(td){		//	ÅĞ¶Ï×óÓÒÁ½±ßÊÇ·ñÓĞµØÀ×¡£´Ë·½·¨Ó¦¸Ã²ğÎª¡°Ïò×ó¡±ºÍ¡°ÏòÓ
 		flag = true;
 	}
 	if(nextTd != null && autoShowNumber(nextTd) == 0){
-		mineSurround(nextTd);		//	ÔÙ´Îµİ¹éµ÷ÓÃ¡°ÏòÉÏÉ¨À×Çø¡±ºÍ¡°ÏòÏÂÉ¨À×Çø¡±·½·¨
+		mineSurround(nextTd);		//	å†æ¬¡é€’å½’è°ƒç”¨â€œå‘ä¸Šæ‰«é›·åŒºâ€å’Œâ€œå‘ä¸‹æ‰«é›·åŒºâ€æ–¹æ³•
 		flag = true;
 	}
 	return flag;
 }
 
-function mineUp(td){		//	ÅĞ¶ÏÉÏ·½µÄÀ×Çø
+function mineUp(td){		//	åˆ¤æ–­ä¸Šæ–¹çš„é›·åŒº
 	var tdIndex = getNodeIndex(td);
 	var previousTdParent = previousSameSibling(td.parentNode);
 	var name = td.name;
@@ -231,21 +189,21 @@ function mineUp(td){		//	ÅĞ¶ÏÉÏ·½µÄÀ×Çø
 	td.className = (td.innerHTML=="true") ? "mine" : "clicked";
 	
 	if(previousTdParent != null){
-		var aboveTd = previousTdParent.firstChild;	//	°²È«´¦Àí£¬¼ì²é¿ÕÎÄ±¾½ÚµãµÈ ÆäËü·ÇÄ¿±êÀàĞÍ½Úµã
+		var aboveTd = previousTdParent.firstChild;	//	å®‰å…¨å¤„ç†ï¼Œæ£€æŸ¥ç©ºæ–‡æœ¬èŠ‚ç‚¹ç­‰ å…¶å®ƒéç›®æ ‡ç±»å‹èŠ‚ç‚¹
 		while(aboveTd.name != name){
 			aboveTd = aboveTd.nextSibling;
 		}
 		
-		for(var i=0; i<tdIndex; i++){		//	µÃµ½ÉÏÒ»ĞĞ´Ëºá×ø±êµÄÔªËØ
+		for(var i=0; i<tdIndex; i++){		//	å¾—åˆ°ä¸Šä¸€è¡Œæ­¤æ¨ªåæ ‡çš„å…ƒç´ 
 			aboveTd = nextSameSibling(aboveTd);
 		}
-		if(mineSide(aboveTd)){				//	Èç¹ûÖÜÎ§8¸ö·½ÏòÃ»ÓĞÀ×£¬ÔòĞèÒª¼ÌĞøµİ¹éÏòÉÏÉ¨À×
+		if(mineSide(aboveTd)){				//	å¦‚æœå‘¨å›´8ä¸ªæ–¹å‘æ²¡æœ‰é›·ï¼Œåˆ™éœ€è¦ç»§ç»­é€’å½’å‘ä¸Šæ‰«é›·
 			mineUp(aboveTd);
 		}
 	}
 }
 
-function mineDown(td){		//	ÅĞ¶ÏÏÂ·½µÄÀ×Çø
+function mineDown(td){		//	åˆ¤æ–­ä¸‹æ–¹çš„é›·åŒº
 	var tdIndex = getNodeIndex(td);
 	var nextTdParent = nextSameSibling(td.parentNode);
 	var name = td.name;
@@ -267,28 +225,28 @@ function mineDown(td){		//	ÅĞ¶ÏÏÂ·½µÄÀ×Çø
 	}
 }
 
-function autoShowNumber(td){	//	É¨À×ÇøÊ±µ÷ÓÃµÄº¯Êı
-	if(td == null || td.className == "clicked"){	//	¶ÔÓÚ¿Õ½Úµã»ò ÒÑÉ¨¹ıµÄÀ×Çø£¬Ö±½Ó·µ»Ønull
+function autoShowNumber(td){	//	æ‰«é›·åŒºæ—¶è°ƒç”¨çš„å‡½æ•°
+	if(td == null || td.className == "clicked"){	//	å¯¹äºç©ºèŠ‚ç‚¹æˆ– å·²æ‰«è¿‡çš„é›·åŒºï¼Œç›´æ¥è¿”å›null
 		return null;
 	}
 	
-	var ifMine = exploreMine(td);	//	Èç¹û¸ÃµãÊÇµØÀ×£¬ÔòÒ²Ö±½Ó·µ»Øtrue
+	var ifMine = exploreMine(td);	//	å¦‚æœè¯¥ç‚¹æ˜¯åœ°é›·ï¼Œåˆ™ä¹Ÿç›´æ¥è¿”å›true
 	if(ifMine === true){
 		return ifMine;
 	}
-	td.innerHTML = ifMine;			//	´¦ÀíÀ×Çø£¬ÉèÖÃÀ×ÇøÎÄ×ÖÌáĞÑ£¬²¢¸Ä±äÑùÊ½
+	td.innerHTML = ifMine;			//	å¤„ç†é›·åŒºï¼Œè®¾ç½®é›·åŒºæ–‡å­—æé†’ï¼Œå¹¶æ”¹å˜æ ·å¼
 	td.className = "clicked";
 	return ifMine;
 }
 
-function previewMine(){				//	Ô¤ÀÀµØÀ×Î»ÖÃ
+function previewMine(){				//	é¢„è§ˆåœ°é›·ä½ç½®
 	var table = document.getElementsByTagName("table");
 	var tr = table[0].firstChild.firstChild;
 	var td;
-	while(tr != null){				//	±éÀútableËùÓĞµÄtd½Úµã£¬¸Ä±äµØÀ×µÄÑùÊ½£¨ÏÔÊ¾µØÀ×Î»ÖÃ£©
+	while(tr != null){				//	éå†tableæ‰€æœ‰çš„tdèŠ‚ç‚¹ï¼Œæ”¹å˜åœ°é›·çš„æ ·å¼ï¼ˆæ˜¾ç¤ºåœ°é›·ä½ç½®ï¼‰
 		td = tr.firstChild;
 		while(td != null){
-			if((td.className == "out") && (exploreMine(td) === true)){	//	±»µã»÷¹ıµÄÇøÓò£¨class²»Îªout£©²»´¦Àí
+			if((td.className == "out") && (exploreMine(td) === true)){	//	è¢«ç‚¹å‡»è¿‡çš„åŒºåŸŸï¼ˆclassä¸ä¸ºoutï¼‰ä¸å¤„ç†
 				td.className = "pre";
 			}
 			td = td.nextSibling;
@@ -297,7 +255,7 @@ function previewMine(){				//	Ô¤ÀÀµØÀ×Î»ÖÃ
 	}
 }
 
-function unpreviewMine(){			//	È¡ÏûÔ¤ÀÀ
+function unpreviewMine(){			//	å–æ¶ˆé¢„è§ˆ
 	var table = document.getElementsByTagName("table");
 	var tr = table[0].firstChild.firstChild;
 	var td;
@@ -313,11 +271,11 @@ function unpreviewMine(){			//	È¡ÏûÔ¤ÀÀ
 	}
 }
 
-function a(){	//	µ¯¿ò²âÊÔ£¬ÓÃÓÚµ÷ÊÔ ´úÂëÔÚÄÄĞĞÖ®ºóÎŞ·¨¼ÌĞøÖ´ĞĞ£¨¹È¸èä¯ÀÀÆ÷µÄ½Å±¾µ÷ÊÔ£¬¿ÉÒÔºÜÇå³ş¿´³öÄÄĞ©´úÂëÓĞ¡°¹ÊÕÏ¡±£©
+function a(){	//	å¼¹æ¡†æµ‹è¯•ï¼Œç”¨äºè°ƒè¯• ä»£ç åœ¨å“ªè¡Œä¹‹åæ— æ³•ç»§ç»­æ‰§è¡Œï¼ˆè°·æ­Œæµè§ˆå™¨çš„è„šæœ¬è°ƒè¯•ï¼Œå¯ä»¥å¾ˆæ¸…æ¥šçœ‹å‡ºå“ªäº›ä»£ç æœ‰â€œæ•…éšœâ€ï¼‰
 	alert("test");
 }
 
-function gameover(){		//	ÓÎÏ·½áÊø£¨ĞèÒª°ÑËùÓĞµÄµØÀ×ĞÅÏ¢ÏÔÊ¾³öÀ´£©
+function gameover(){		//	æ¸¸æˆç»“æŸï¼ˆéœ€è¦æŠŠæ‰€æœ‰çš„åœ°é›·ä¿¡æ¯æ˜¾ç¤ºå‡ºæ¥ï¼‰
 	var table = document.getElementsByTagName("table");
 	var tr = table[0].firstChild.firstChild;
 	var td;
@@ -334,7 +292,7 @@ function gameover(){		//	ÓÎÏ·½áÊø£¨ĞèÒª°ÑËùÓĞµÄµØÀ×ĞÅÏ¢ÏÔÊ¾³öÀ´£©
 	}
 }
 
-function testAgain(){		//	¸Ãº¯ÊıÓÃÓÚÖØĞÂ²âÊÔ£¬¶ø²»¸Ä±äËæ»úµÄÀ×Çø¡££¨ÓĞĞ©ÌØÊâµÄÀ×Õó»áÒı·¢bug£¬ËùÒÔĞèÒª´Îº¯ÊıÀ´·´¸´²âÊÔ£©
+function testAgain(){		//	è¯¥å‡½æ•°ç”¨äºé‡æ–°æµ‹è¯•ï¼Œè€Œä¸æ”¹å˜éšæœºçš„é›·åŒºã€‚ï¼ˆæœ‰äº›ç‰¹æ®Šçš„é›·é˜µä¼šå¼•å‘bugï¼Œæ‰€ä»¥éœ€è¦æ¬¡å‡½æ•°æ¥åå¤æµ‹è¯•ï¼‰
 	var table = document.getElementsByTagName("table");
 	var tr = table[0].firstChild.firstChild;
 	var td;
@@ -348,31 +306,4 @@ function testAgain(){		//	¸Ãº¯ÊıÓÃÓÚÖØĞÂ²âÊÔ£¬¶ø²»¸Ä±äËæ»úµÄÀ×Çø¡££¨ÓĞĞ©ÌØÊâµÄÀ×
 		tr = tr.nextSibling;
 	}
 }
-//	ËùÓĞÀûÓÃinnerHTMLÅĞ¶ÏÑùÊ½µÄ£¬¶¼ÊÇ²»°²È«µÄ£¬ÒòÎª 0µÄÀ×ÇøĞÅÏ¢×îÖÕ½«²»»áÏÔÊ¾£¬Õâ»áµ¼ÖÂinnerHTMLÊ§Îó
-</script>
-
-<body bgcolor="#DCDCDC">
-<!-- <body bgcolor="gainsboro"> -->
-
-
-<script type="text/javascript">
-document.write("<table border=\"1\" align=\"center\" cellspacing=\"0\" bgcolor=\"white\">");
-	for(var i=0; i<9; i++){
-		document.write("<tr>");
-		for(var j=0; j<9; j++){
-			document.write("<td class=\"out\" onmouseover=\"setBgcolor(this)\" onmouseout=\"setBgcolor(this)\" onclick=\"time1(this);\" ondblclick=\"setFlag(this)\"></td>");
-		}
-		document.write("</tr>");
-	}
-document.write("</table>");
-var minePosition = setMine(9,9,10);
-
-</script>
-
-
-<p><input type="button" value="µØÀ×Î»ÖÃÔ¤ÀÀ" onclick="previewMine()" /><input type="button" value="È¡ÏûÔ¤ÀÀ" onclick="unpreviewMine()" /></p>
-<p><input type="button" value="ÖØĞÂ²âÊÔ" onclick="testAgain()" /></p>
-<p><input type="button" value="ÏÔÊ¾È«²¿" onclick="gameover()" /></p>
-
-</body>
-</html>
+//	æ‰€æœ‰åˆ©ç”¨innerHTMLåˆ¤æ–­æ ·å¼çš„ï¼Œéƒ½æ˜¯ä¸å®‰å…¨çš„ï¼Œå› ä¸º 0çš„é›·åŒºä¿¡æ¯æœ€ç»ˆå°†ä¸ä¼šæ˜¾ç¤ºï¼Œè¿™ä¼šå¯¼è‡´innerHTMLå¤±è¯¯

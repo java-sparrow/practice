@@ -56,22 +56,7 @@
 .divBorder{ border: 1px solid red; }
 </style>
 </head>
-<script type="text/javascript">
-function faceState(state){
-	document.getElementById("faceDiv").className = state;
-}
-function addFace(img){
-	var textDiv = document.getElementById("textDiv");
-	var imgClone = document.createElement("img");
-	imgClone.src = img.src;
-	
-	textDiv.appendChild(imgClone);
-	faceState('hide');
-}
-function claerContent(){
-	document.getElementById("textDiv").innerHTML = "";
-}
-</script>
+
 <body>
 <table align="center">
 <tr><td>
@@ -97,5 +82,7 @@ function claerContent(){
 	</div>
 </div>
 </td></tr></table>
+
+<script type="text/javascript" src="qqFace.js" charset="UTF-8"></script>
 </body>
 </html>
